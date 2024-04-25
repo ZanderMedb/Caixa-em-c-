@@ -5,14 +5,12 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-// Definindo a estrutura Cliente
 typedef struct _cliente {
     char nome[50];
     float saldo;
     struct _cliente *prox;
 } Cliente;
 
-// Função para criar um novo Cliente
 Cliente *criarCliente(char *nome, float saldo) {
     Cliente *novoCliente = calloc(1, sizeof(Cliente));
     strcpy(novoCliente->nome, nome);
@@ -21,25 +19,21 @@ Cliente *criarCliente(char *nome, float saldo) {
     return novoCliente;
 }
 
-// Função para imprimir informações de um Cliente
 void displayCliente(Cliente *cliente) {
     printf("Nome: %s\n", cliente->nome);
     printf("Saldo: %.2f\n", cliente->saldo);
 }
 
-// Função para realizar saque
 void sacar(Cliente *cliente, float valor) {
     if (cliente->saldo >= valor) {
         cliente->saldo -= valor;
     }
 }
 
-// Função para realizar Deposito
 void depositar(Cliente *cliente, float valorDep) {
     cliente->saldo += valorDep;
 }
 
-// Função para realizar transferencia
 void transferir(Cliente *cliente, Cliente *remetente, Cliente *destinatario, float valorTransf) {
     if (remetente->saldo >= valorTransf) {
         remetente->saldo -= valorTransf;
@@ -47,7 +41,6 @@ void transferir(Cliente *cliente, Cliente *remetente, Cliente *destinatario, flo
     }
 }
 
-// Função para desalocar a memória por nome do Cliente
 void limparMemoriaPorNome(Cliente **head, char *nome) {
     Cliente *atual = *head;
     Cliente *anterior = NULL;
@@ -61,8 +54,8 @@ void limparMemoriaPorNome(Cliente **head, char *nome) {
             } else {
                 anterior->prox = atual->prox;
             }
-            printf("Saldo final de %s: %.2f\n", atual->nome, atual->saldo); // Mostra o saldo atualizado
-            free(atual); // Libera a memória alocada para o cliente
+            printf("Saldo final de %s: %.2f\n", atual->nome, atual->saldo);
+            free(atual); 
             return;
         }
         anterior = atual;
@@ -73,16 +66,16 @@ void limparMemoriaPorNome(Cliente **head, char *nome) {
 }
 
 int main(void) {
-    setlocale(LC_ALL, "Portuguese");//configuração regional(BR)
+    setlocale(LC_ALL, "Portuguese");
 
-    int continuar = 1; // Variável para determinar se o programa deve continuar executando
+    int continuar = 1;
 
-    // Variáveis para armazenar informações do cliente e da operação
+    
     char nomeCliente[50];
     float saldoCliente, valorOperacao;
     int opcao;
 
-    // Flag para verificar se os prompts iniciais já foram mostrados
+    
     int promptsMostrados = 0;
 
     while (continuar) {
@@ -91,14 +84,13 @@ int main(void) {
         float saldoIni;
 
         if (!promptsMostrados) {
-            // Solicitar informações do cliente apenas na primeira iteração do loop
             printf("Informe o nome do cliente: ");
             scanf("%s", nomeCliente);
 
             printf("\nInforme o saldo do cliente: ");
             scanf("%f", &saldoCliente);
 
-            promptsMostrados = 1; // Marcador de que os prompts já foram mostrados
+            promptsMostrados = 1;
         }
 
         printf("Escolha [1] para saque, [2] para deposito e [3] para transferencia: ");
@@ -135,10 +127,8 @@ int main(void) {
                     printf("\nValor sacado: %.2f", valorOperacao);
                 }
 
-                // Limpar a memória alocada para o cliente com nome específico
                 limparMemoriaPorNome(&cliente, nomeCliente);
 
-                // Reinicializar as variáveis
                 cliente = NULL;
                 saldoIni = 0;
                 valorOperacao = 0;
@@ -170,10 +160,8 @@ int main(void) {
                     printf("\nValor depositado: %.2f", valorOperacao);
                 }
 
-                // Limpar a memória alocada para o cliente com nome específico
                 limparMemoriaPorNome(&cliente, nomeCliente);
 
-                // Reinicializar as variáveis
                 cliente = NULL;
                 saldoIni = 0;
                 valorOperacao = 0;
@@ -222,11 +210,9 @@ int main(void) {
                     printf("\nValor recebido: %.2f", valorOperacao);
                 }
 
-                // Limpar a memória alocada para os clientes com nomes específicos
                 limparMemoriaPorNome(&cliente1, nomeCliente);
                 limparMemoriaPorNome(&cliente2, cliente2->nome);
 
-                // Reinicializar as variáveis
                 cliente1 = NULL;
                 cliente2 = NULL;
                 saldoIni = 0;
@@ -237,8 +223,7 @@ int main(void) {
             default:
                 printf("\nOpção inválida");
         }
-
-        // Verificar se o usuário deseja continuar executando o programa
+        
         printf("\nDeseja realizar outra operacao? (1 - Sim / 0 - Não): ");
         scanf("%d", &continuar);
         system("cls");
